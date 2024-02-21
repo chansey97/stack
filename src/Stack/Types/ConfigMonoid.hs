@@ -187,12 +187,14 @@ data ConfigMonoid = ConfigMonoid
     -- ^ Casa repository prefix (deprecated).
   , snapshotLocation :: !(First Text)
     -- ^ Custom location of LTS/Nightly snapshots
+  , globalHintsLocation :: !(First (Unresolved GlobalHintsLocation))
+    -- ^ Custom location of global hints
   , noRunCompile  :: !FirstFalse
     -- ^ See: 'configNoRunCompile'
   , stackDeveloperMode :: !(First Bool)
     -- ^ See 'configStackDeveloperMode'
   }
-  deriving (Generic, Show)
+  deriving Generic
 
 instance Semigroup ConfigMonoid where
   (<>) = mappenddefault
@@ -331,6 +333,8 @@ parseConfigMonoidObject rootDir obj = do
   casaOpts <- jsonSubWarnings (obj ..:? configMonoidCasaOptsName ..!= mempty)
   casaRepoPrefix <- First <$> obj ..:? configMonoidCasaRepoPrefixName
   snapshotLocation <- First <$> obj ..:? configMonoidSnapshotLocationName
+  globalHintsLocation <-
+    First <$> jsonSubWarningsT (obj ..:? configMonoidGlobalHintsLocationName)
   noRunCompile <- FirstFalse <$> obj ..:? configMonoidNoRunCompileName
   stackDeveloperMode <- First <$> obj ..:? configMonoidStackDeveloperModeName
   pure ConfigMonoid
@@ -396,6 +400,7 @@ parseConfigMonoidObject rootDir obj = do
     , casaOpts
     , casaRepoPrefix
     , snapshotLocation
+    , globalHintsLocation
     , noRunCompile
     , stackDeveloperMode
     }
@@ -586,6 +591,9 @@ configMonoidCasaRepoPrefixName = "casa-repo-prefix"
 
 configMonoidSnapshotLocationName :: Text
 configMonoidSnapshotLocationName = "snapshot-location-base"
+
+configMonoidGlobalHintsLocationName :: Text
+configMonoidGlobalHintsLocationName = "global-hints-location"
 
 configMonoidNoRunCompileName :: Text
 configMonoidNoRunCompileName = "script-no-run-compile"

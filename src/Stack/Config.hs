@@ -511,6 +511,12 @@ configFromConfigMonoid
                         <> "/" <> display day <> ".yaml"
                 mkRSLUrl builder = RSLUrl (utf8BuilderToText builder) Nothing
                 addr' = display $ T.dropWhileEnd (=='/') addr
+    globalHintsLoc <- case getFirst configMonoid.globalHintsLocation of
+      Nothing -> pure defaultGlobalHintsLocation
+      Just unresolverGlobalHintsLoc -> do
+        resolvedGlobalHintsLocation <-
+          resolvePaths (Just stackRoot) unresolverGlobalHintsLoc
+        pure $ const resolvedGlobalHintsLocation
     let stackDeveloperMode = fromFirst
           stackDeveloperModeDefault
           configMonoid.stackDeveloperMode
@@ -543,6 +549,7 @@ configFromConfigMonoid
           clConnectionCount
           casa
           snapLoc
+          globalHintsLoc
           (\pantryConfig -> initUserStorage
             (stackRoot </> relFileStorage)
             ( \userStorage -> inner Config

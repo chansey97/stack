@@ -12,6 +12,17 @@ packages:
   original:
     hackage: Cabal-3.10.1.0@sha256:6d11adf7847d9734e7b02785ff831b5a0d11536bfbcefd6634b2b08411c63c94,12316
 - completed:
+    commit: 8d434dc12a658dd050bd6cb01d207455a0db524a
+    git: https://github.com/commercialhaskell/pantry.git
+    name: pantry
+    pantry-tree:
+      sha256: 28f9add95c852fc9cef7b62dfad6961ba89d50b2a2d731aaa7a3a8759c576843
+      size: 3632
+    version: 0.9.4
+  original:
+    commit: 8d434dc12a658dd050bd6cb01d207455a0db524a
+    git: https://github.com/commercialhaskell/pantry.git
+- completed:
     hackage: process-1.6.18.0@sha256:cd0a3e0376b5a8525983d3131a31e52f9ffefc278ce635eec45a9d3987b8be3e,3025
     pantry-tree:
       sha256: 3f9fef1f9a6ed1a6923578ada0bc8c16d016344cc67614473384524334463cc2
